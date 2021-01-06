@@ -56,15 +56,13 @@ def add_todo():
     return todo_schema.jsonify(todo)
 
 # PUT / PATCH
-@app.route('/todo/<id>', methods=["PUT"])
-def todo_update(id):
+@app.route('/todo/<id>', methods=["PATCH"])
+def update_todo(id):
     todo = Todo.query.get(id)
-    title = request.json['title']
-    done = request.json['done']
-
-    todo.title = title
-    todo.done = done
-
+    new_done = request.json['done']
+    
+    todo.done = new_done
+    
     db.session.commit()
     return todo_schema.jsonify(todo)
 
