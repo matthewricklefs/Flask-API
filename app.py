@@ -30,14 +30,38 @@ todo_schema = TodoSchema()
 todos_schema = TodoSchema(many=True)
 
 
-
+# GET
 @app.route("/", methods=["GET"])
 def home():
     return"<h1>Todo Flask API</h1>"
 
-# GET
 # POST
+@app.route("/todo", methods=["POST"])
+def add_todo():
+    title = request.json["title"]
+    done = request.json['done']
+
+    new_todo = Todo(title, done)
+
+    db.session.add(new_todo)
+    db.session.commit()
+
+    todo = Todo.query.get(new_todo.id)
+    return todo_schema.jsonify(todo)
+
 # PUT / PATCH
+# @app.route('/todo/<id>', methods=["PUT"])
+# def todo_update(id):
+#     todo = Todo.query.get(id)
+#     title = request.json['title']
+#     done = request.json['done']
+
+#     todo.title = title
+#     todo.done = done
+
+#     db.session.commit()
+#     return todo_schema.jsonify(todo)
+
 # DELETE
 
 if __name__ == "__main__":
