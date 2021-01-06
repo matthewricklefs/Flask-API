@@ -29,11 +29,17 @@ class TodoSchema(ma.Schema):
 todo_schema = TodoSchema()
 todos_schema = TodoSchema(many=True)
 
-
-# GET
 @app.route("/", methods=["GET"])
 def home():
     return"<h1>Todo Flask API</h1>"
+
+# GET
+@app.route("/todos", methods=["GET"])
+def get_todos():
+    all_todos = Todo.query.all()
+    result = todos_schema.dump(all_todos)
+
+    return jsonify(result)
 
 # POST
 @app.route("/todo", methods=["POST"])
@@ -50,17 +56,17 @@ def add_todo():
     return todo_schema.jsonify(todo)
 
 # PUT / PATCH
-# @app.route('/todo/<id>', methods=["PUT"])
-# def todo_update(id):
-#     todo = Todo.query.get(id)
-#     title = request.json['title']
-#     done = request.json['done']
+@app.route('/todo/<id>', methods=["PUT"])
+def todo_update(id):
+    todo = Todo.query.get(id)
+    title = request.json['title']
+    done = request.json['done']
 
-#     todo.title = title
-#     todo.done = done
+    todo.title = title
+    todo.done = done
 
-#     db.session.commit()
-#     return todo_schema.jsonify(todo)
+    db.session.commit()
+    return todo_schema.jsonify(todo)
 
 # DELETE
 
