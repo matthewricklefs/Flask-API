@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-heroku = heroku(app)
+heroku = Heroku(app)
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 basedir = os.path.abspath(os.path.dirname(__file__))
